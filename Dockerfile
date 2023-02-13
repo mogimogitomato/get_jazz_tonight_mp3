@@ -24,6 +24,7 @@ RUN apk update \
     && apk add --no-cache \
     chromium \
     ffmpeg=5.1.2-r1 \
+    eyed3 \
     font-noto \
     fontconfig \
     git \
