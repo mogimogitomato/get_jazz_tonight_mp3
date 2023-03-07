@@ -27,15 +27,16 @@ end
 def exec_command(url, date, title, comment)
   return if [url, date, title].any?(&:empty?)
 
+  file_name = "jazz_tonight_#{date}.mp3"
   get_mp3_exec_command = %(ffmpeg -http_seekable 0 -i #{url} \
     -write_xing 0 -metadata title="jazz_tonight_#{date} #{title}" \
     -metadata artist="大友良英" -metadata album="ジャズ・トゥナイト" \
-    jazz_tonight_#{date}.mp3)
+    #{file_name})
   `#{get_mp3_exec_command}`
   return if comment.empty?
 
   # ffmpegのバグで,commentのメタデータは上手く編集できないらしいのでeyeD3で代替(https://stackoverflow.com/a/61991841)
-  add_comment_command = %(eyeD3 --comment #{comment} jazz_tonight_#{date}.mp3)
+  add_comment_command = %(eyeD3 --comment #{comment} #{file_name})
   `#{add_comment_command}`
 end
 
@@ -46,7 +47,7 @@ Puppeteer.launch(**launch_options) do |browser|
 
   await next_html = get_inner_html(page, "#{NHK_FM_PLAYLIST_BASE_URL}?p=#{match}")
 
-  url = next_html.match(`%r#{NHK_FM_STREAMING_URL}[^"]*`)[0]
+  url = next_html.match(%r(#{NHK_FM_STREAMING_URL}[^"]*))[0]
   date = next_html.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)[0]
 
   title = get_title(page)
