@@ -27,16 +27,16 @@ end
 def exec_command(url, date, title, comment)
   return if [url, date, title].any?(&:empty?)
 
-  file_name = "jazz_tonight_#{date}.mp3"
+  file_name = "jazz_tonight_#{date}"
   get_mp3_exec_command = %(ffmpeg -http_seekable 0 -i #{url} \
-    -write_xing 0 -metadata title="jazz_tonight_#{date} #{title}" \
+    -write_xing 0 -metadata title="#{file_name} #{title}" \
     -metadata artist="大友良英" -metadata album="ジャズ・トゥナイト" \
-    #{file_name})
+    #{file_name}.mp3)
   `#{get_mp3_exec_command}`
   return if comment.empty?
 
   # ffmpegのバグで,commentのメタデータは上手く編集できないらしいのでeyeD3で代替(https://stackoverflow.com/a/61991841)
-  add_comment_command = %(eyeD3 --comment #{comment} #{file_name})
+  add_comment_command = %(eyeD3 --comment #{comment} #{file_name}.mp3)
   `#{add_comment_command}`
 end
 
