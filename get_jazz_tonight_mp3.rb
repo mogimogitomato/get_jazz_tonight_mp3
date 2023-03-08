@@ -6,7 +6,7 @@ launch_options = {
 }
 
 NHK_FM_JAZZ_TONIGHT_URL = 'https://www.nhk.or.jp/radio/ondemand/detail.html?p=0449_01'.freeze
-NHK_FM_PLAYLIST_BASE_URL = 'https://www.nhk.or.jp/radio/player/ondemand.html'.freeze
+NHK_FM_PLAYER_BASE_URL = 'https://www.nhk.or.jp/radio/player/ondemand.html'.freeze
 NHK_FM_STREAMING_URL = 'https://vod-stream.nhk.jp/radioondemand'.freeze
 
 def get_inner_html(page, url)
@@ -45,7 +45,7 @@ Puppeteer.launch(**launch_options) do |browser|
   await html = get_inner_html(page, NHK_FM_JAZZ_TONIGHT_URL)
   match = html.match(/\d{4}_\d{2}_\d{7}/)[0]
 
-  await next_html = get_inner_html(page, "#{NHK_FM_PLAYLIST_BASE_URL}?p=#{match}")
+  await next_html = get_inner_html(page, "#{NHK_FM_PLAYER_BASE_URL}?p=#{match}")
 
   url = next_html.match(%r(#{NHK_FM_STREAMING_URL}[^"]*))[0]
   date = next_html.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)[0]
