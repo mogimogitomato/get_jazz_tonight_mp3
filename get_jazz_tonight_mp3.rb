@@ -7,10 +7,13 @@ def fetch_file_list
   begin
     res = URI.parse(NHK_FM_JAZZ_TONIGHT_JSON_URL).read
     json = JSON.parse(res.force_encoding('UTF-8'), { symbolize_names: true })
-  rescue
-    raise '番組情報取得に失敗しました'
+  rescue StandardError => e
+    raise "番組情報取得に失敗しました: #{e.message}"
   end
-  json[:main][:detail_list][0][:file_list][0]
+  file_list = json.dig(:main, :detail_list, 0, :file_list, 0)
+  raise 'ファイルリストが存在しません' if file_list.nil?
+
+  file_list
 end
 
 def exec_command(url, date, title, comment)
