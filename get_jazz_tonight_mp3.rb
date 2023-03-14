@@ -19,9 +19,9 @@ end
 def exec_command(url, date, title, comment)
   return if [url, date, title].any?(&:empty?)
 
-  file_name = "jazz_tonight_#{date}"
+  file_name = "jazz_tonight_#{date}_#{title}".gsub(/ジャズ・トゥナイト　/, '').gsub(/\/|\\|\?|\*|<|>|\|/, '_')
   get_mp3_exec_command = %(ffmpeg -http_seekable 0 -i #{url} \
-    -write_xing 0 -metadata title="#{file_name} #{title}" \
+    -write_xing 0 -metadata title="#{date} #{title}" \
     -metadata artist="大友良英" -metadata album="ジャズ・トゥナイト" \
     #{file_name}.mp3)
   `#{get_mp3_exec_command}`
