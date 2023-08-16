@@ -22,5 +22,5 @@ RUN apk update \
 
 RUN apk update \
     && apk add --no-cache \
-    ffmpeg=5.1.2-r1 \
+    ffmpeg=5.1.3-r0 \
     eyed3 \
