@@ -37,7 +37,7 @@ url = file_list[:file_name]
 date = file_list[:aa_vinfo3].slice(0, 8).gsub(/(\d{4})(\d{2})(\d{2})/, '\1-\2-\3')
 title = file_list[:file_title].gsub(/ジャズ・トゥナイト/, '')
                               .gsub(/[[:space:]]/, '')
-                              .gsub(/[Ａ-Ｚａ-ｚ０-９]/) { |s| http://s.tr('Ａ-Ｚａ-ｚ０-９ ', 'A-Za-z0-9') }
+                              .gsub(/[Ａ-Ｚａ-ｚ０-９]/) { |s| s.tr('Ａ-Ｚａ-ｚ０-９ ', 'A-Za-z0-9') }
                               .gsub(/\/|\\|\?|\*|<|>|\|/, '_')
 subscription = file_list[:file_title_sub]
 comment = "#{title}: #{subscription}"
